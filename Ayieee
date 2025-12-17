@@ -1,39 +1,41 @@
--- Get the part we're attaching the text to
-local textHolder = script.Parent
+-- Runs when the game loads (for a LocalScript, so it only shows on your screen)
+game.Players.LocalPlayer.PlayerGui.ChildAdded:Wait() -- Make sure the GUI is ready
 
--- Create a "BillboardGui" (makes text float and face the player)
-local billboardGui = Instance.new("BillboardGui")
-billboardGui.Parent = textHolder
-billboardGui.Size = UDim2.new(0, 200, 0, 50) -- Width: 200, Height: 50
-billboardGui.AlwaysOnTop = true -- Text stays visible even if blocked
-billboardGui.StudsOffset = Vector3.new(0, 2, 0) -- Move text 2 studs above the part
+-- Create a pop-up message box
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer.PlayerGui
 
--- Create the text label itself
+local messageBox = Instance.new("Frame")
+messageBox.Parent = screenGui
+messageBox.Size = UDim2.new(0, 300, 0, 150)
+messageBox.Position = UDim2.new(0.5, -150, 0.5, -75) -- Center of the screen
+messageBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+messageBox.BorderSizePixel = 2
+messageBox.BorderColor3 = Color3.new(1, 0, 0)
+
 local loveText = Instance.new("TextLabel")
-loveText.Parent = billboardGui
-loveText.Size = UDim2.new(1, 0, 1, 0) -- Fill the entire BillboardGui
-loveText.BackgroundTransparency = 1 -- No background
-loveText.Text = "i love you" -- The message!
-loveText.TextSize = 30 -- Text size
-loveText.TextColor3 = Color3.new(1, 0, 0) -- Start red (RGB: 1=255, 0=0, 0=0)
-loveText.Font = Enum.Font.HeavyItalic -- Fancy font
+loveText.Parent = messageBox
+loveText.Size = UDim2.new(1, 0, 0.7, 0)
+loveText.Position = UDim2.new(0, 0, 0.1, 0)
+loveText.BackgroundTransparency = 1
+loveText.Text = "i love you"
+loveText.TextSize = 40
+loveText.TextColor3 = Color3.new(1, 0.5, 0.5)
+loveText.Font = Enum.Font.HeavyItalic
+loveText.TextWrapped = true
+loveText.TextYAlignment = Enum.TextYAlignment.Center
+loveText.TextXAlignment = Enum.TextXAlignment.Center
 
--- Add an animation: Cycle text color through red → pink → purple → red
-local colors = {
-    Color3.new(1, 0, 0), -- Red
-    Color3.new(1, 0.5, 0.5), -- Pink
-    Color3.new(0.7, 0, 1) -- Purple
-}
-local currentColorIndex = 1
+-- Add a "Close" button
+local closeButton = Instance.new("TextButton")
+closeButton.Parent = messageBox
+closeButton.Size = UDim2.new(0, 80, 0, 30)
+closeButton.Position = UDim2.new(0.5, -40, 0.8, 0)
+closeButton.BackgroundColor3 = Color3.new(1, 0, 0)
+closeButton.Text = "Close"
+closeButton.TextSize = 18
+closeButton.TextColor3 = Color3.new(1, 1, 1)
 
-while true do -- Loop forever
-    -- Smoothly transition to the next color
-    for i = 0, 1, 0.01 do
-        local color1 = colors[currentColorIndex]
-        local color2 = colors[currentColorIndex % #colors + 1]
-        loveText.TextColor3 = color1:Lerp(color2, i)
-        wait(0.01) -- Wait 0.01 seconds between each frame
-    end
-    -- Move to the next color in the list
-    currentColorIndex = currentColorIndex % #colors + 1
-end
+closeButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy() -- Close the message when clicked
+end)
