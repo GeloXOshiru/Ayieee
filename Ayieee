@@ -1,0 +1,39 @@
+-- Get the part we're attaching the text to
+local textHolder = script.Parent
+
+-- Create a "BillboardGui" (makes text float and face the player)
+local billboardGui = Instance.new("BillboardGui")
+billboardGui.Parent = textHolder
+billboardGui.Size = UDim2.new(0, 200, 0, 50) -- Width: 200, Height: 50
+billboardGui.AlwaysOnTop = true -- Text stays visible even if blocked
+billboardGui.StudsOffset = Vector3.new(0, 2, 0) -- Move text 2 studs above the part
+
+-- Create the text label itself
+local loveText = Instance.new("TextLabel")
+loveText.Parent = billboardGui
+loveText.Size = UDim2.new(1, 0, 1, 0) -- Fill the entire BillboardGui
+loveText.BackgroundTransparency = 1 -- No background
+loveText.Text = "i love you" -- The message!
+loveText.TextSize = 30 -- Text size
+loveText.TextColor3 = Color3.new(1, 0, 0) -- Start red (RGB: 1=255, 0=0, 0=0)
+loveText.Font = Enum.Font.HeavyItalic -- Fancy font
+
+-- Add an animation: Cycle text color through red → pink → purple → red
+local colors = {
+    Color3.new(1, 0, 0), -- Red
+    Color3.new(1, 0.5, 0.5), -- Pink
+    Color3.new(0.7, 0, 1) -- Purple
+}
+local currentColorIndex = 1
+
+while true do -- Loop forever
+    -- Smoothly transition to the next color
+    for i = 0, 1, 0.01 do
+        local color1 = colors[currentColorIndex]
+        local color2 = colors[currentColorIndex % #colors + 1]
+        loveText.TextColor3 = color1:Lerp(color2, i)
+        wait(0.01) -- Wait 0.01 seconds between each frame
+    end
+    -- Move to the next color in the list
+    currentColorIndex = currentColorIndex % #colors + 1
+end
