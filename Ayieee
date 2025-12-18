@@ -1,45 +1,47 @@
--- Load the Rayfield Library
-local Rayfield = loadstring(game:HttpGet('sirius.menu'))()
-
--- Create the Main Window
-local Window = Rayfield:CreateWindow({
-   Name = "Roblox Pro Library",
-   LoadingTitle = "Initializing UI...",
-   LoadingSubtitle = "by YourName",
-   ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "RobloxUIConfig",
-      FileName = "MainConfig"
-   },
-   Discord = {
-      Enabled = false,
-      Invite = "noinvite",
-      RememberJoins = true
-   },
-   KeySystem = false, -- Set to true if you want a key system
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+local Window = WindUI:CreateWindow({
+Title = "slaaaaa",
+Icon = "shield",
+Author = "by .ftgs and .ftgs",
+Folder = "MySuperHub",
+Size = UDim2.fromOffset(580, 460),
+MinSize = Vector2.new(560, 350),
+MaxSize = Vector2.new(850, 560),
+Transparent = true,
+Theme = "Dark",
+Resizable = true,
+SideBarWidth = 200,
+BackgroundImageTransparency = 0.42,
+HideSearchBar = true,
+ScrollBarEnabled = false,
+User = {
+Enabled = true,
+Anonymous = false,
+Callback = function()
+print("User clicked!")
+end,
+},
+-- KeySystem foi REMOVIDO completamente
+-- Nenhuma key, nenhum grace, abre direto
 })
-
--- Add a Tab with the Roblox Icon
--- Note: Use rbxassetid://6031068433 for a standard Roblox logo
-local MainTab = Window:CreateTab("Home", 6031068433) 
-
--- Create a Section
-local Section = MainTab:CreateSection("Features")
-
--- Create a Button
-local Button = MainTab:CreateButton({
-   Name = "Click Me",
-   Callback = function()
-       print("Button was clicked!")
-   end,
+-- O resto do código continua igual (tabs, toggles, etc.)
+local MainTab = Window:Tab({ Title = "Principal", Icon = "home" })
+MainTab:Toggle({
+Title = "Speed Hack",
+Default = false,
+Callback = function(v)
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v and 100 or 16
+end
 })
-
--- Create a Toggle
-local Toggle = MainTab:CreateToggle({
-   Name = "Auto-Farm",
-   CurrentValue = false,
-   Flag = "Toggle1",
-   Callback = function(Value)
-       print("Auto-farm is now:", Value)
-   end,
+MainTab:Button({
+Title = "Rejoin",
+Callback = function()
+game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+end
+})
+WindUI:Notify({
+Title = "WindUI carregado!",
+Content = "Sem key • Uso livre • Divirta-se!",
+Duration = 6,
+Image = "success"
 })
