@@ -1,41 +1,45 @@
--- Runs when the game loads (for a LocalScript, so it only shows on your screen)
-game.Players.LocalPlayer.PlayerGui.ChildAdded:Wait() -- Make sure the GUI is ready
+-- Load the Rayfield Library
+local Rayfield = loadstring(game:HttpGet('sirius.menu'))()
 
--- Create a pop-up message box
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = game.Players.LocalPlayer.PlayerGui
+-- Create the Main Window
+local Window = Rayfield:CreateWindow({
+   Name = "Roblox Pro Library",
+   LoadingTitle = "Initializing UI...",
+   LoadingSubtitle = "by YourName",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = "RobloxUIConfig",
+      FileName = "MainConfig"
+   },
+   Discord = {
+      Enabled = false,
+      Invite = "noinvite",
+      RememberJoins = true
+   },
+   KeySystem = false, -- Set to true if you want a key system
+})
 
-local messageBox = Instance.new("Frame")
-messageBox.Parent = screenGui
-messageBox.Size = UDim2.new(0, 300, 0, 150)
-messageBox.Position = UDim2.new(0.5, -150, 0.5, -75) -- Center of the screen
-messageBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-messageBox.BorderSizePixel = 2
-messageBox.BorderColor3 = Color3.new(1, 0, 0)
+-- Add a Tab with the Roblox Icon
+-- Note: Use rbxassetid://6031068433 for a standard Roblox logo
+local MainTab = Window:CreateTab("Home", 6031068433) 
 
-local loveText = Instance.new("TextLabel")
-loveText.Parent = messageBox
-loveText.Size = UDim2.new(1, 0, 0.7, 0)
-loveText.Position = UDim2.new(0, 0, 0.1, 0)
-loveText.BackgroundTransparency = 1
-loveText.Text = "i love you"
-loveText.TextSize = 40
-loveText.TextColor3 = Color3.new(1, 0.5, 0.5)
-loveText.Font = Enum.Font.HeavyItalic
-loveText.TextWrapped = true
-loveText.TextYAlignment = Enum.TextYAlignment.Center
-loveText.TextXAlignment = Enum.TextXAlignment.Center
+-- Create a Section
+local Section = MainTab:CreateSection("Features")
 
--- Add a "Close" button
-local closeButton = Instance.new("TextButton")
-closeButton.Parent = messageBox
-closeButton.Size = UDim2.new(0, 80, 0, 30)
-closeButton.Position = UDim2.new(0.5, -40, 0.8, 0)
-closeButton.BackgroundColor3 = Color3.new(1, 0, 0)
-closeButton.Text = "Close"
-closeButton.TextSize = 18
-closeButton.TextColor3 = Color3.new(1, 1, 1)
+-- Create a Button
+local Button = MainTab:CreateButton({
+   Name = "Click Me",
+   Callback = function()
+       print("Button was clicked!")
+   end,
+})
 
-closeButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy() -- Close the message when clicked
-end)
+-- Create a Toggle
+local Toggle = MainTab:CreateToggle({
+   Name = "Auto-Farm",
+   CurrentValue = false,
+   Flag = "Toggle1",
+   Callback = function(Value)
+       print("Auto-farm is now:", Value)
+   end,
+})
